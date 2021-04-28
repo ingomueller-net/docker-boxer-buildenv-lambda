@@ -1,6 +1,9 @@
 FROM lambci/lambda:build-python3.7
 MAINTAINER Ingo Müller <ingo.mueller@inf.ethz.ch>
 
+ARG RUST_VERSION=1.51.0
+ARG RUSTUP_VERSION=1.24.0
+
 # Packages
 RUN touch /var/lib/rpm/* && \
     yum install -y \
@@ -13,11 +16,11 @@ RUN touch /var/lib/rpm/* && \
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     PATH=/usr/local/cargo/bin:$PATH \
-    RUST_VERSION=1.45.2
+    RUST_VERSION=${RUST_VERSION}
 
 # Install rust
 RUN set -eux; \
-    url="https://static.rust-lang.org/rustup/archive/1.22.1/x86_64-unknown-linux-gnu/rustup-init"; \
+    url="https://static.rust-lang.org/rustup/archive/${RUSTUP_VERSION}/x86_64-unknown-linux-gnu/rustup-init"; \
     wget --progress=dot:giga "$url"; \
     chmod +x rustup-init; \
     ./rustup-init -y --no-modify-path --profile minimal --default-toolchain $RUST_VERSION; \
